@@ -118,21 +118,27 @@ static char *http_parse_result(const char*lpbuf)
         printf("http/1.1 not faind\n");
         return NULL;
     }
+
     if(atoi(ptmp + 9)!=200){
         printf("result:\n%s\n",lpbuf);
         return NULL;
     }
 
+    printf("===>[%s, %d]ptmp=%s\n", __FUNCTION__, __LINE__, ptmp);
     ptmp = (char*)strstr(lpbuf,"\r\n\r\n");
     if(!ptmp){
         printf("ptmp is NULL\n");
         return NULL;
     }
+
+    printf("===>[%s, %d]ptmp=%s\n", __FUNCTION__, __LINE__, ptmp);
     response = (char *)malloc(strlen(ptmp)+1);
     if(!response){
         printf("malloc failed \n");
         return NULL;
     }
+    printf("===>[%s, %d]ptmp=%d\n", __FUNCTION__, __LINE__, strlen(ptmp));
+    printf("===>[%s, %d]ptmp=%s\n", __FUNCTION__, __LINE__, ptmp);
     strcpy(response,ptmp+4);
     return response;
 }
@@ -230,6 +236,7 @@ char * http_get(const char *url)
     }
     http_tcpclient_close(socket_fd);
 
+//    printf("===>[%s, %d]%s\n", __FUNCTION__, __LINE__, lpbuf);
     return http_parse_result(lpbuf);
 }
 
